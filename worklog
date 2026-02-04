@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监理日志汇总 - 项目部内部共享</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .log-card:hover { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+
+    <header class="bg-white border-b border-gray-200 py-8 px-4 text-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">监理日志汇总</h1>
+        <p class="mt-2 text-gray-500 text-sm md:text-base">用于项目部内部共享每日监理工作记录</p>
+    </header>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start shadow-sm">
+            <div class="flex-shrink-0 mt-0.5">
+                <svg class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-bold text-amber-800">通知公告</h3>
+                <p id="notice-content" class="text-sm text-amber-700 mt-1 leading-relaxed">
+                    </p>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-3xl mx-auto py-6 px-4">
+        
+        <div class="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
+            <div id="log-list" class="divide-y divide-gray-100">
+                </div>
+        </div>
+
+    </main>
+
+    <footer class="max-w-3xl mx-auto py-10 px-4">
+        <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+            <h3 class="text-blue-800 text-sm font-semibold mb-1">使用说明：</h3>
+            <p class="text-blue-700 text-xs leading-relaxed">
+                1. 本页面由项目部统一维护，每日下班前更新。<br>
+                2. 点击右侧“查看详情”即可跳转至对应日期的监理日志。<br>
+                3. 如需新增或修改链接，请联系文档管理员。
+            </p>
+        </div>
+        
+        <div class="text-center py-4 border-2 border-dashed border-gray-200 rounded-lg">
+            <span class="text-gray-400 text-sm italic">+ 新增日志请联系管理员添加</span>
+        </div>
+        
+        <p class="text-center text-gray-400 text-xs mt-8">© 华能泰安燃机项目部</p>
+    </footer>
+
+    <script>
+        /**
+         * 数据维护区
+         */
+        
+        // 1. 公告内容
+        const currentNotice = "温馨提示：请各专业监理工程师在上传日志前，务必核对现场施工照片的清晰度，并确保关键节点旁站记录完整。";
+
+        // 2. 日志数据列表
+        const logs = [
+            { date: "2026-02-07", name: "监理日志", url: "" },
+            { date: "2026-02-06", name: "监理日志", url: "" },
+            { date: "2026-02-05", name: "监理日志", url: "" },
+            { date: "2026-02-04", name: "监理日志", url: "https://www.kdocs.cn/l/ck2rOiFOD90k" },
+            { date: "2026-02-03", name: "监理日志", url: "https://www.kdocs.cn/l/crN68CtYfVxg" },
+            { date: "2026-02-02", name: "监理日志", url: "https://www.kdocs.cn/l/cqKs0CKHsTAI" },
+        ];
+
+        // 渲染函数
+        function initPage() {
+            // 渲染公告
+            document.getElementById('notice-content').innerText = currentNotice;
+
+            // 渲染列表
+            const listContainer = document.getElementById('log-list');
+            listContainer.innerHTML = logs.map(log => {
+                const hasUrl = log.url && log.url.length > 0;
+                return `
+                <div class="log-card flex items-center justify-between p-4 transition-colors">
+                    <div class="flex-1 pr-4">
+                        <div class="text-xs font-medium text-blue-600 mb-1">${log.date}</div>
+                        <div class="text-sm md:text-base font-semibold text-gray-800">${log.name}</div>
+                    </div>
+                    <div>
+                        <a href="${hasUrl ? log.url : 'javascript:void(0)'}" 
+                           target="${hasUrl ? '_blank' : '_self'}" 
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-all
+                           ${hasUrl ? 'text-white bg-blue-600 hover:bg-blue-700' : 'text-gray-400 bg-gray-200 cursor-not-allowed'}">
+                           ${hasUrl ? '查看详情' : '暂未更新'}
+                        </a>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // 初始化加载
+        initPage();
+    </script>
+</body>
+</html>
